@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Booking Galpencil</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Form Booking Galpencil</h1>
+</header>
+
+<div class="container">
+<form id="bookingForm">
+  <label>Nama:</label>
+  <input type="text" name="nama" required>
+  
+  <label>Tanggal:</label>
+  <input type="date" name="tanggal" required>
+  
+  <label>Keterangan:</label>
+  <input type="text" name="keterangan" placeholder="Contoh: reservasi ulang tahun">
+
+  <button type="submit">Booking</button>
+</form>
+<p id="status"></p>
+</div>
+
+<script>
+const form = document.getElementById('bookingForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+  const res = await fetch('/api/bookings', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  });
+  const msg = await res.text();
+  document.getElementById('status').textContent = msg;
+  form.reset();
+});
+</script>
+</body>
+</html>
